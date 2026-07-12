@@ -1,0 +1,25 @@
+services:
+  proxy:
+    restart: "no"
+
+  frontend:
+    build:
+      target: development
+    volumes:
+      - ./frontend/src:/app/src:ro
+      - ./frontend/scripts:/app/scripts:ro
+    restart: "no"
+
+  backend:
+    build:
+      target: development
+    environment:
+      APP_ENVIRONMENT: development
+      APP_LOG_LEVEL: DEBUG
+    volumes:
+      - ./backend/app:/app/app:ro
+      - ./backend/alembic:/app/alembic:ro
+    restart: "no"
+
+  db:
+    restart: "no"

@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17.4-alpine3.21
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test-only-password
+          POSTGRES_DB: tasks_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U test -d tasks_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      APP_DATABASE_URL: postgresql+psycopg://test:test-only-password@localhost:5432/tasks_test
+      APP_ENVIRONMENT: test
+      APP_ALLOWED_HOSTS: localhost,testserver
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.10"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.14.0"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -e './backend[dev]'
+          npm ci --prefix frontend
+      - name: Lint application code
+        run: |
+          ruff check backend
+          npm run lint --prefix frontend
+      - name: Test migrations
+        working-directory: backend
+        run: |
+          alembic upgrade head
+          alembic downgrade base
+          alembic upgrade head
+      - name: Run tests
+        run: |
+          pytest backend/tests
+          npm test --prefix frontend
+
+  containers:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint Dockerfiles with Hadolint
+        run: |
+          docker run --rm -i hadolint/hadolint:v2.12.0-alpine < backend/Dockerfile
+          docker run --rm -i hadolint/hadolint:v2.12.0-alpine < frontend/Dockerfile
+      - name: Build images
+        run: |
+          docker build --target production -t task-manager-backend:ci backend
+          docker build --target production -t task-manager-frontend:ci frontend
+      - name: Scan repository with Trivy
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+      - name: Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          image-ref: task-manager-backend:ci
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+      - name: Scan frontend image with Trivy
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          image-ref: task-manager-frontend:ci
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"

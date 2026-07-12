@@ -1,0 +1,26 @@
+services:
+  proxy:
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid
+      - /var/cache/nginx:size=16m,noexec,nosuid
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+
+  frontend:
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid
+      - /var/cache/nginx:size=16m,noexec,nosuid
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+
+  backend:
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,noexec,nosuid
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+
+  db:
+    security_opt: ["no-new-privileges:true"]
