@@ -8,7 +8,7 @@ COPY --chown=node:node src ./src
 USER node
 RUN npm ci --ignore-scripts && npm run build
 
-FROM nginxinc/nginx-unprivileged:1.27.4-alpine3.21 AS production
+FROM nginxinc/nginx-unprivileged:1.30.3-alpine3.23 AS production
 COPY --from=builder --chown=101:101 /build/dist /usr/share/nginx/html
 COPY --chown=101:101 nginx.conf /etc/nginx/conf.d/default.conf
 USER 101:101
