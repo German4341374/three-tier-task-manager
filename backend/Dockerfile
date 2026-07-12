@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1.7
-FROM python:3.12.10-slim-bookworm AS builder
+FROM python:3.12.13-slim-bookworm AS builder
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_NO_CACHE_DIR=1
 WORKDIR /build
 COPY pyproject.toml ./
 COPY app ./app
 RUN python -m pip wheel --wheel-dir /wheels .
 
-FROM python:3.12.10-slim-bookworm AS production
+FROM python:3.12.13-slim-bookworm AS production
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --create-home app
 WORKDIR /app

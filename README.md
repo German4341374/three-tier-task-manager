@@ -28,7 +28,7 @@ network, and PostgreSQL has no host port.
 
 ## Technology stack
 
-- Python 3.12.10, FastAPI 0.115.12, SQLAlchemy 2.0.40, Alembic 1.15.2
+- Python 3.12.13, FastAPI 0.115.12, SQLAlchemy 2.0.40, Alembic 1.15.2
 - PostgreSQL 17.4 Alpine
 - Node.js 22.14 Alpine build stage and dependency-free browser JavaScript
 - Nginx Unprivileged 1.27.4 Alpine
