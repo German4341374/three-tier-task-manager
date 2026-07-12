@@ -70,7 +70,7 @@ jobs:
           docker build --target production -t task-manager-backend:ci backend
           docker build --target production -t task-manager-frontend:ci frontend
       - name: Scan repository with Trivy
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: .
@@ -78,14 +78,14 @@ jobs:
           ignore-unfixed: true
           exit-code: "1"
       - name: Scan backend image with Trivy
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: task-manager-backend:ci
           severity: CRITICAL
           ignore-unfixed: true
           exit-code: "1"
       - name: Scan frontend image with Trivy
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: task-manager-frontend:ci
           severity: CRITICAL
