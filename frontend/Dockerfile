@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7
-FROM node:22.14.0-alpine3.21 AS builder
+FROM node:25.2.1-alpine3.21 AS builder
 WORKDIR /build
 RUN chown node:node /build
 COPY --chown=node:node package.json package-lock.json ./
@@ -16,7 +16,7 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget -q -O - http://127.0.0.1:8080/health || exit 1
 
-FROM node:22.14.0-alpine3.21 AS development
+FROM node:25.2.1-alpine3.21 AS development
 WORKDIR /app
 COPY --chown=node:node package.json package-lock.json ./
 COPY --chown=node:node scripts ./scripts
