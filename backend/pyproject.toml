@@ -9,7 +9,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
   "alembic==1.15.2",
   "fastapi==0.141.1",
-  "psycopg[binary]==3.2.6",
+  "psycopg[binary]==3.3.4",
   "pydantic-settings==2.8.1",
   "sqlalchemy==2.0.40",
   "structlog==25.2.0",
