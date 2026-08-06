@@ -26,6 +26,6 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--timeou
 FROM production AS development
 USER root
 RUN python -m pip install --no-cache-dir \
-    httpx==0.28.1 pytest==8.3.5 pytest-cov==6.0.0 ruff==0.11.2
+    httpx==0.28.1 pytest==9.1.1 pytest-cov==6.0.0 ruff==0.11.2
 USER 10001:10001
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--no-access-log"]
