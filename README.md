@@ -1,4 +1,4 @@
-# Three-Tier Task Manager
+# Three Tier Task Manager
 
 A compact task manager built primarily to demonstrate practical Docker and DevOps skills.
 The application has a static frontend, a FastAPI API, PostgreSQL persistence, and an Nginx
