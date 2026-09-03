@@ -1,9 +1,9 @@
 # Three Tier Task Manager
 
-A compact task manager built primarily to demonstrate practical Docker and DevOps skills.
-The application has a static frontend, a FastAPI API, PostgreSQL persistence, and an Nginx
-edge proxy. It includes migrations, health checks, structured logs, tests, scanning, backups,
-and separate development and production Compose behavior.
+This task manager is deliberately simple at the product layer so the container boundaries are easy
+to inspect. A static frontend talks to a FastAPI service through Nginx, while PostgreSQL holds the
+data. The repository covers migrations, health checks, logs, tests, image scanning, backups, and
+separate development and production Compose behavior.
 
 ## Architecture
 
@@ -146,7 +146,7 @@ regularly; an untested backup is only an assumption.
 - Compose `deploy.resources` support varies outside Docker Compose and Swarm implementations.
 - PostgreSQL backups are logical full dumps without retention scheduling or encryption.
 
-## Future improvements
+## Possible next steps
 
 - Add OpenTelemetry metrics/traces and dashboards.
 - Add authentication, per-user task ownership, pagination, and audit events.
@@ -155,7 +155,7 @@ regularly; an untested backup is only an assumption.
 - Add scheduled encrypted backups with automated restore drills.
 - Add Kubernetes manifests only after the Compose operational model is well understood.
 
-## Interview talking points
+## Design questions
 
 - Logical three-tier architecture versus four runtime containers.
 - Multi-stage builds reduce runtime tooling and attack surface.
@@ -165,7 +165,7 @@ regularly; an untested backup is only an assumption.
 - Migrations and restore tests make state changes operationally reviewable.
 - Development optimizes feedback; production optimizes immutability and least privilege.
 
-See `INTERVIEW.md` and `DEMO.md` for a prepared walkthrough.
+See `docs/design-notes.md` and `DEMO.md` for a prepared walkthrough.
 
 ## License
 
