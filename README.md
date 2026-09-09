@@ -1,9 +1,10 @@
 # Three Tier Task Manager
 
-This task manager is deliberately simple at the product layer so the container boundaries are easy
-to inspect. A static frontend talks to a FastAPI service through Nginx, while PostgreSQL holds the
-data. The repository covers migrations, health checks, logs, tests, image scanning, backups, and
-separate development and production Compose behavior.
+A simple task list with a web frontend and a Python API. Nginx forwards requests to the right
+container, and PostgreSQL stores the tasks.
+
+The repo includes database migrations, health checks, backup scripts, and separate Compose
+settings for development and a production-style setup. You can run it all locally.
 
 ## Architecture
 
